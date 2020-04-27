@@ -2,12 +2,16 @@
   <div class="select-component">
     <div class="selector">
       <component v-if="icon" :is="`icon-${icon}`" class="icon" />
-      <div :class="['form-item', 'select', icon]" @click="toggleOptions">
+      <div
+        :class="['form-item', 'select', icon]"
+        v-click-outside="closeDropdown"
+        @click="showDropdown"
+      >
         {{ selectedOption ? selectedOption.label : "All" }}
         <component :is="'icon-arrow'" class="select-arrow" />
       </div>
     </div>
-    <div v-if="showDropdown" class="options">
+    <div v-if="dropdown" class="options">
       <div
         v-for="option in options"
         :key="option.value"
@@ -41,19 +45,23 @@ export default {
   },
 
   methods: {
-    toggleOptions() {
-      this.showDropdown = !this.showDropdown;
+    showDropdown() {
+      this.dropdown = true;
+    },
+
+    closeDropdown() {
+      this.dropdown = false;
     },
 
     selectOption(option) {
       this.selectedOption = option;
-      this.toggleOptions();
+      this.closeDropdown();
     }
   },
 
   data() {
     return {
-      showDropdown: false,
+      dropdown: false,
       selectedOption: null,
       options: [
         { label: "Category 1", value: 1 },
@@ -88,6 +96,7 @@ export default {
       border-radius: 5px;
       color: $dark-text;
       user-select: none;
+      cursor: pointer;
 
       &.filter {
         margin-right: 45px;
@@ -114,6 +123,10 @@ export default {
       padding: 7px 15px;
       border-top: 1px solid $separator;
       cursor: pointer;
+
+      &:hover {
+        color: $white;
+      }
 
       &:last-child {
         border-bottom-left-radius: 5px;
