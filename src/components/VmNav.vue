@@ -1,6 +1,6 @@
 <template>
   <div class="menu-component">
-    <vm-input icon="search" />
+    <vm-search-input icon="search" />
     <div class="filters">
       <vm-select icon="filter" />
       <vm-select icon="order" />
@@ -11,7 +11,7 @@
 
 <script>
 import IconRandom from "@/components/Icon/IconRandom.vue";
-import VmInput from "@/components/VmInput.vue";
+import VmSearchInput from "@/components/VmSearchInput.vue";
 import VmSelect from "@/components/VmSelect.vue";
 
 export default {
@@ -19,7 +19,7 @@ export default {
 
   components: {
     IconRandom,
-    VmInput,
+    VmSearchInput,
     VmSelect
   }
 };
