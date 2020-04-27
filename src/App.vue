@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <div class="container"></div>
+    <div class="container">
+      <vm-nav />
+    </div>
   </div>
 </template>
 
 <script>
+import VmNav from "@/components/VmNav.vue";
+
 export default {
-  name: "App"
+  name: "App",
+  components: {
+    VmNav
+  }
 };
 </script>
 
@@ -16,5 +23,11 @@ export default {
 #app {
   font-family: "Barlow", sans-serif;
   background-color: $dark-bg;
+  font-size: 15px;
+
+  .container {
+    padding: 13px 25px;
+    max-width: 1100px;
+  }
 }
 </style>
