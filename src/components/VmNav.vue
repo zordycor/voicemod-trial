@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-component">
+  <div class="nav-component">
     <vm-search-input icon="search" />
     <div class="filters">
       <vm-select icon="filter" />
@@ -25,26 +25,14 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "@/assets/sass/variables/_colors.scss";
-
-.menu-component {
+<style lang="scss" scoped>
+.nav-component {
   display: flex;
   justify-content: space-between;
   margin-bottom: 35px;
 
   .filters {
     display: flex;
-  }
-
-  .form-item {
-    height: 20px;
-    background-color: $black;
-    border: none;
-
-    &:focus {
-      outline: none;
-    }
   }
 }
 </style>

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&display=swap");
+@import "@/assets/sass/variables/_colors.scss";
 
 body {
   margin: 0;
@@ -7,4 +8,16 @@ body {
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+.form-item {
+  height: 20px;
+  background-color: $black;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
 }
