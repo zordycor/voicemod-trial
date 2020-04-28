@@ -5,10 +5,13 @@
       <div
         :class="['form-item', 'select', icon]"
         v-click-outside="closeDropdown"
-        @click="showDropdown"
+        @click="toggleDropdown"
       >
         {{ selectedOption ? selectedOption.label : "All" }}
-        <component :is="'icon-arrow'" class="select-arrow" />
+        <component
+          :is="'icon-arrow'"
+          :class="['select-arrow', { active: dropdown }]"
+        />
       </div>
     </div>
     <div v-if="dropdown" class="options">
@@ -45,8 +48,8 @@ export default {
   },
 
   methods: {
-    showDropdown() {
-      this.dropdown = true;
+    toggleDropdown() {
+      this.dropdown = !this.dropdown;
     },
 
     closeDropdown() {
@@ -91,19 +94,19 @@ export default {
       display: flex;
       justify-content: space-between;
       min-width: 130px;
-      padding: 5px 10px;
+      padding: 6px 10px;
       margin-right: 45px;
       border-radius: 5px;
       color: $dark-text;
       user-select: none;
       cursor: pointer;
 
-      &.filter {
-        margin-right: 45px;
-      }
-
       &.order {
         margin-right: 20px;
+      }
+
+      .select-arrow.active {
+        transform: rotateZ(180deg);
       }
     }
   }
