@@ -1,5 +1,5 @@
 <template>
-  <div class="list-title">
+  <div class="list-title-component">
     <div class="title">{{ titleUpperCase || "" }}</div>
     <span class="line"></span>
   </div>
@@ -24,8 +24,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/variables/_colors.scss";
 
-.list-title {
+.list-title-component {
   display: flex;
+  margin-bottom: 25px;
 
   .title {
     margin-right: 15px;
