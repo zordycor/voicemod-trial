@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import IconFilter from "@/components/Icon/IconFilter.vue";
-import IconOrder from "@/components/Icon/IconOrder.vue";
-import IconArrow from "@/components/Icon/IconArrow.vue";
-import IconSearch from "@/components/Icon/IconSearch.vue";
+import IconFilter from "./Icon/IconFilter.vue";
+import IconOrder from "./Icon/IconOrder.vue";
+import IconArrow from "./Icon/IconArrow.vue";
+import IconSearch from "./Icon/IconSearch.vue";
 
 export default {
   name: "VmSelect",

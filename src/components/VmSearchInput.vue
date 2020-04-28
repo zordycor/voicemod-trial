@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import IconSearch from "@/components/Icon/IconSearch.vue";
-import IconClose from "@/components/Icon/IconClose.vue";
+import IconSearch from "./Icon/IconSearch.vue";
+import IconClose from "./Icon/IconClose.vue";
 
 export default {
   name: "VmSearchInput",

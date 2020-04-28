@@ -2,17 +2,20 @@
   <div id="app">
     <div class="container">
       <vm-nav />
+      <vm-list />
     </div>
   </div>
 </template>
 
 <script>
 import VmNav from "@/components/VmNav.vue";
+import VmList from "@/components/VmList.vue";
 
 export default {
   name: "App",
   components: {
-    VmNav
+    VmNav,
+    VmList
   }
 };
 </script>

@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import IconRandom from "@/components/Icon/IconRandom.vue";
-import VmSearchInput from "@/components/VmSearchInput.vue";
-import VmSelect from "@/components/VmSelect.vue";
+import IconRandom from "./Icon/IconRandom.vue";
+import VmSearchInput from "./VmSearchInput.vue";
+import VmSelect from "./VmSelect.vue";
 
 export default {
   name: "VmNav",
