@@ -1,6 +1,6 @@
 <template>
   <div class="nav-component">
-    <vm-search-input icon="search" />
+    <vm-search-input icon="search" @input-change="emitSearch" />
     <div class="filters">
       <vm-select icon="filter" />
       <vm-select icon="order" />
@@ -16,6 +16,12 @@ import VmSelect from "./VmSelect.vue";
 
 export default {
   name: "VmNav",
+
+  methods: {
+    emitSearch(searchText) {
+      this.$emit("input-change", searchText);
+    }
+  },
 
   components: {
     IconRandom,

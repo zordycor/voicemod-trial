@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div class="container">
-      <vm-nav />
-      <vm-list />
+      <vm-nav @input-change="filteredList" />
+      <vm-list :voices="voices" />
     </div>
   </div>
 </template>
@@ -10,12 +10,32 @@
 <script>
 import VmNav from "@/components/VmNav.vue";
 import VmList from "@/components/VmList.vue";
+import VoicesApi from "@/api/VoicesApi.js";
 
 export default {
   name: "App",
+
   components: {
     VmNav,
     VmList
+  },
+
+  methods: {
+    filteredList(searchText) {
+      console.log(searchText);
+      this.voices = this.voices.filter(voice =>
+        voice.name.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+  },
+  created() {
+    this.voices = VoicesApi.getVoices();
+  },
+
+  data() {
+    return {
+      voices: []
+    };
   }
 };
 </script>

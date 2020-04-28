@@ -1,7 +1,11 @@
 <template>
   <div class="search-component">
     <icon-search class="icon icon-search" />
-    <input v-model="searchText" class="form-item search" />
+    <input
+      v-model="searchText"
+      class="form-item search"
+      @change="$emit('input-change', searchText)"
+    />
     <div class="icon icon-close" @click="emptyInput">
       <icon-close :color="searchText ? '#FFF' : '#000'" />
     </div>

@@ -1,20 +1,60 @@
 <template>
   <div class="list-component">
     <vm-list-title title="Favourite voices" />
-    <div class="fav-list"></div>
+    <div class="fav-list">
+      <vm-voice
+        v-for="voice in favVoices"
+        :key="voice.id"
+        :voice="voice"
+        @toggle-fav="toggleFavVoice"
+      />
+    </div>
     <vm-list-title title="Pro voices" />
-    <div class="voice-list"></div>
+    <div class="voice-list" v-if="voices">
+      <vm-voice
+        v-for="voice in voices"
+        :key="voice.id"
+        :voice="voice"
+        @toggle-fav="toggleFavVoice"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import VmListTitle from "./VmListTitle";
+import VmVoice from "./VmVoice";
 
 export default {
   name: "VmList",
 
+  props: {
+    voices: Array
+  },
+
   components: {
-    VmListTitle
+    VmListTitle,
+    VmVoice
+  },
+
+  methods: {
+    toggleFavVoice(voice, isFav) {
+      isFav
+        ? this.favVoices.push({ ...voice, fav: isFav })
+        : (this.favVoices = this.favVoices.filter(v => v.id !== voice.id));
+    }
+  },
+
+  computed: {
+    voiceFavCheck(voice) {
+      return this.favVoices.filter(v => v.id === voice.id).length > 0;
+    }
+  },
+
+  data() {
+    return {
+      favVoices: []
+    };
   }
 };
 </script>
@@ -28,6 +68,10 @@ export default {
 
   .fav-list,
   .voice-list {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-column-gap: 50px;
+    grid-row-gap: 20px;
     min-height: 200px;
   }
 }
