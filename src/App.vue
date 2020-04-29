@@ -1,13 +1,20 @@
 <template>
   <div id="app">
     <div class="container">
-      <vm-nav @input-change="filteredList" />
-      <vm-list :voices="voices" />
+      <vm-nav
+        :options="voiceTags"
+        @input-change="searchFilter"
+        @filter-change="filterVoices"
+        @order-change="orderVoices"
+        @select-random="selectRandomVoice"
+      />
+      <vm-list :voices="voices" :randomVoice="randomVoice" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import VmNav from "@/components/VmNav.vue";
 import VmList from "@/components/VmList.vue";
 import VoicesApi from "@/api/VoicesApi.js";
@@ -21,20 +28,47 @@ export default {
   },
 
   methods: {
-    filteredList(searchText) {
-      console.log(searchText);
-      this.voices = this.voices.filter(voice =>
-        voice.name.toLowerCase().includes(searchText.toLowerCase())
-      );
+    getVoicesList(params) {
+      this.voices = VoicesApi.getVoices(params);
+    },
+
+    searchFilter(searchText) {
+      this.getVoicesList({ ...this.params, name: searchText.toLowerCase() });
+    },
+
+    selectRandomVoice() {
+      this.randomVoice = this.voices[Math.random() * this.voices.length - 1];
+    },
+
+    filterVoices(category) {
+      this.getVoicesList({ ...this.params, tag: category });
+    },
+    orderVoices(order) {
+      this.getVoicesList({ ...this.params, order: order });
     }
   },
+
+  computed: {
+    ...mapState(["voices"]),
+
+    voiceTags() {
+      return [...new Set(this.voices.map(voice => voice.tags.toString()))];
+    }
+  },
+
   created() {
-    this.voices = VoicesApi.getVoices();
+    this.getVoicesList(this.params);
   },
 
   data() {
     return {
-      voices: []
+      allVoices: [],
+      randomVoice: null,
+      params: {
+        name: "",
+        tag: "",
+        order: "asc"
+      }
     };
   }
 };

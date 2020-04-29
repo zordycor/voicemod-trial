@@ -1,22 +1,26 @@
 <template>
   <div class="list-component">
-    <vm-list-title title="Favourite voices" />
-    <div class="fav-list">
-      <vm-voice
-        v-for="voice in favVoices"
-        :key="voice.id"
-        :voice="voice"
-        @toggle-fav="toggleFavVoice"
-      />
+    <div class="fav-list-component" v-show="favVoices.length">
+      <vm-list-title title="Favourite voices" />
+      <div class="fav-list">
+        <vm-voice
+          v-for="voice in favVoices"
+          :key="voice.id"
+          :voice="voice"
+          @toggle-fav="toggleFavVoice"
+        />
+      </div>
     </div>
-    <vm-list-title title="Pro voices" />
-    <div class="voice-list" v-if="voices">
-      <vm-voice
-        v-for="voice in voices"
-        :key="voice.id"
-        :voice="voice"
-        @toggle-fav="toggleFavVoice"
-      />
+    <div class="voice-list-component">
+      <vm-list-title title="Pro voices" />
+      <div class="voice-list" v-if="voices">
+        <vm-voice
+          v-for="voice in voices"
+          :key="voice.id"
+          :voice="voice"
+          @toggle-fav="toggleFavVoice"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -29,7 +33,8 @@ export default {
   name: "VmList",
 
   props: {
-    voices: Array
+    voices: Array,
+    randomVoice: Object
   },
 
   components: {
@@ -69,10 +74,11 @@ export default {
   .fav-list,
   .voice-list {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(auto-fill, 120px);
     grid-column-gap: 50px;
     grid-row-gap: 20px;
-    min-height: 200px;
+    padding-bottom: 20px;
+    justify-content: center;
   }
 }
 </style>

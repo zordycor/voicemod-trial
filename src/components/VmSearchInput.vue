@@ -1,11 +1,7 @@
 <template>
   <div class="search-component">
     <icon-search class="icon icon-search" />
-    <input
-      v-model="searchText"
-      class="form-item search"
-      @change="$emit('input-change', searchText)"
-    />
+    <input v-model="searchText" class="form-item search" />
     <div class="icon icon-close" @click="emptyInput">
       <icon-close :color="searchText ? '#FFF' : '#000'" />
     </div>
@@ -21,6 +17,12 @@ export default {
 
   props: {
     icon: String
+  },
+
+  watch: {
+    searchText(text) {
+      this.$emit("input-change", text);
+    }
   },
 
   methods: {
@@ -44,6 +46,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/sass/variables/_colors.scss";
+@import "@/assets/sass/variables/_breakpoints.scss";
 
 .search-component {
   display: flex;
@@ -67,9 +70,19 @@ export default {
   }
 
   .search {
+    flex: 1;
     color: $white;
     font-size: 16px;
     padding: 6px 0;
+    margin-bottom: 15px;
+
+    @media ($mini-device) {
+      margin-bottom: 35px;
+    }
+
+    @media ($medium-device) {
+      flex: auto;
+    }
   }
 }
 </style>

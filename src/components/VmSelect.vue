@@ -1,13 +1,13 @@
 <template>
   <div class="select-component">
-    <div class="selector">
+    <div
+      class="selector"
+      @click="toggleDropdown"
+      v-click-outside="closeDropdown"
+    >
       <component v-if="icon" :is="`icon-${icon}`" class="icon" />
-      <div
-        :class="['form-item', 'select', icon]"
-        v-click-outside="closeDropdown"
-        @click="toggleDropdown"
-      >
-        {{ selectedOption ? selectedOption.label : "All" }}
+      <div :class="['form-item', 'select', icon]">
+        {{ selectedOption ? selectedOption : placeholder | capitalize }}
         <component
           :is="'icon-arrow'"
           :class="['select-arrow', { active: dropdown }]"
@@ -16,12 +16,12 @@
     </div>
     <div v-if="dropdown" class="options">
       <div
-        v-for="option in options"
+        v-for="option in formattedOptions"
         :key="option.value"
         class="option"
-        @click="selectOption(option)"
+        @click="selectOption(option.value)"
       >
-        {{ option.label }}
+        {{ option.label | capitalize }}
       </div>
     </div>
   </div>
@@ -44,7 +44,9 @@ export default {
   },
 
   props: {
-    icon: String
+    options: { type: [Array, Object], required: true },
+    icon: String,
+    placeholder: String
   },
 
   methods: {
@@ -56,21 +58,27 @@ export default {
       this.dropdown = false;
     },
 
-    selectOption(option) {
-      this.selectedOption = option;
+    selectOption(optionValue) {
+      this.selectedOption = optionValue;
+      this.$emit("select-change", optionValue);
       this.closeDropdown();
+    }
+  },
+
+  computed: {
+    formattedOptions() {
+      let arr = [];
+      typeof this.options[0].label === "undefined"
+        ? [...this.options.map(o => arr.push({ label: o, value: o }))]
+        : (arr = this.options);
+      return arr;
     }
   },
 
   data() {
     return {
       dropdown: false,
-      selectedOption: null,
-      options: [
-        { label: "Category 1", value: 1 },
-        { label: "Category 2", value: 2 },
-        { label: "Category 3", value: 3 }
-      ]
+      selectedOption: null
     };
   }
 };
@@ -78,6 +86,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/sass/variables/_colors.scss";
+@import "@/assets/sass/variables/_breakpoints.scss";
 
 .select-component {
   position: relative;
@@ -85,25 +94,23 @@ export default {
 
   .icon {
     margin-right: 10px;
+    cursor: pointer;
   }
 
   .selector {
     display: flex;
+    width: 100%;
+    user-select: none;
 
     .select {
-      display: flex;
+      display: none;
       justify-content: space-between;
       min-width: 130px;
+      flex: 1;
       padding: 6px 10px;
-      margin-right: 45px;
       border-radius: 5px;
       color: $dark-text;
-      user-select: none;
       cursor: pointer;
-
-      &.order {
-        margin-right: 20px;
-      }
 
       .select-arrow.active {
         transform: rotateZ(180deg);
@@ -113,12 +120,12 @@ export default {
 
   .options {
     position: absolute;
-    min-width: 148px;
-    left: 44px;
-    top: 30px;
+    min-width: 120px;
+    left: -40px;
+    top: 35px;
     color: $dark-text;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    z-index: 1;
+    border-radius: 5px;
     box-shadow: 0 4px 4px 0 $light-dark;
 
     .option {
@@ -131,10 +138,32 @@ export default {
         color: $white;
       }
 
+      &:first-child {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border: none;
+      }
+
       &:last-child {
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
       }
+    }
+  }
+
+  @media ($small-device) {
+    flex: 1;
+
+    .selector {
+      .select {
+        display: flex;
+        margin-right: 20px;
+      }
+    }
+
+    .options {
+      width: calc(100% - 65px);
+      left: 44px;
     }
   }
 }
