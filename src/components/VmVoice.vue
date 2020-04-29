@@ -81,6 +81,10 @@ export default {
   .voice-image {
     background-color: $voice-bg;
     border-radius: 50%;
+    height: 120px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 
     &.active {
       background: linear-gradient(
