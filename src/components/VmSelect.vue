@@ -7,19 +7,21 @@
     >
       <component v-if="icon" :is="`icon-${icon}`" class="icon" />
       <div :class="['form-item', 'select', icon]">
-        {{ selectedOption ? selectedOption : placeholder | capitalize }}
+        {{
+          selectedOption ? selectedOption.label : options[0].label | capitalize
+        }}
         <component
           :is="'icon-arrow'"
           :class="['select-arrow', { active: dropdown }]"
         />
       </div>
     </div>
-    <div v-if="dropdown" class="options">
+    <div :class="['options', { active: dropdown }]">
       <div
-        v-for="option in formattedOptions"
+        v-for="option in options"
         :key="option.value"
         class="option"
-        @click="selectOption(option.value)"
+        @click="selectOption(option)"
       >
         {{ option.label | capitalize }}
       </div>
@@ -44,9 +46,8 @@ export default {
   },
 
   props: {
-    options: { type: [Array, Object], required: true },
-    icon: String,
-    placeholder: String
+    options: { type: Array, required: true },
+    icon: String
   },
 
   methods: {
@@ -58,20 +59,10 @@ export default {
       this.dropdown = false;
     },
 
-    selectOption(optionValue) {
-      this.selectedOption = optionValue;
-      this.$emit("select-change", optionValue);
+    selectOption(option) {
+      this.selectedOption = option;
+      this.$emit("select-change", option.value);
       this.closeDropdown();
-    }
-  },
-
-  computed: {
-    formattedOptions() {
-      let arr = [];
-      typeof this.options[0].label === "undefined"
-        ? [...this.options.map(o => arr.push({ label: o, value: o }))]
-        : (arr = this.options);
-      return arr;
     }
   },
 
@@ -100,7 +91,6 @@ export default {
   .selector {
     display: flex;
     width: 100%;
-    user-select: none;
 
     .select {
       display: none;
@@ -112,14 +102,22 @@ export default {
       color: $dark-text;
       cursor: pointer;
 
-      .select-arrow.active {
-        transform: rotateZ(180deg);
+      .select-arrow {
+        transition: transform 0.15s ease-out;
+
+        &.active {
+          transition: transform 0.15s ease-in;
+          transform: rotateZ(180deg);
+        }
       }
     }
   }
 
   .options {
     position: absolute;
+    max-height: 0;
+    transition: max-height 0.15s ease-out;
+    overflow: hidden;
     min-width: 120px;
     left: -40px;
     top: 35px;
@@ -127,6 +125,11 @@ export default {
     z-index: 1;
     border-radius: 5px;
     box-shadow: 0 4px 4px 0 $light-dark;
+
+    &.active {
+      max-height: 300px;
+      transition: max-height 0.15s ease-in;
+    }
 
     .option {
       background-color: $light-dark;

@@ -1,18 +1,21 @@
 <template>
-  <div class="voice-component" v-click-outside="disableVoice">
+  <div class="voice-component" :ref="voice.id">
     <div class="voice-fav" @click="toggleFav">
       <component :is="voiceFavHeart" />
     </div>
-    <div :class="['voice-image', { active: activeVoice }]" @click="toggleVoice">
+    <div :class="['voice-image', { active: isSelected }]" @click="voiceClick">
       <img :src="voiceUrl" :alt="voice.name" />
     </div>
-    <div :class="['voice-name', { active: activeVoice }]">{{ voice.name }}</div>
+    <div :class="['voice-name', { active: isSelected }]">
+      {{ voice.name }}
+    </div>
   </div>
 </template>
 
 <script>
 import IconFavOn from "./Icon/IconFavOn.vue";
 import IconFavOff from "./Icon/IconFavOff.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "VmVoice",
@@ -22,46 +25,52 @@ export default {
   },
 
   methods: {
+    ...mapActions("voices", ["selectVoice", "updateFavVoices"]),
+
     toggleFav() {
-      this.isFav = !this.isFav;
-      this.$emit("toggle-fav", this.voice, this.isFav);
+      this.updateFavVoices(this.voice);
     },
 
-    toggleVoice() {
-      this.activeVoice = !this.activeVoice;
-    },
-
-    disableVoice() {
-      this.activeVoice = false;
+    voiceClick() {
+      this.selectVoice(this.voice);
+      this.$emit(
+        "voice-scroll",
+        this.isSelected
+          ? this.$refs[this.voiceSelected.id].offsetTop -
+              this.$refs[this.voiceSelected.id].clientHeight * 2
+          : window.offsetTop
+      );
     }
   },
 
   computed: {
+    ...mapState("voices", ["favVoiceList", "voiceSelected"]),
+
+    isSelected() {
+      return this.voiceSelected && this.voiceSelected.id === this.voice.id;
+    },
+
     voiceUrl() {
       return require("../assets/" + this.voice.icon);
     },
 
     voiceFavHeart() {
-      return `icon-fav-${this.isFav ? "on" : "off"}`;
+      return `icon-fav-${
+        this.favVoiceList.includes(this.voice) ? "on" : "off"
+      }`;
     }
   },
 
   components: {
     IconFavOn,
     IconFavOff
-  },
-
-  data() {
-    return {
-      activeVoice: false,
-      isFav: this.voice.fav
-    };
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/sass/variables/_colors.scss";
+@import "@/assets/sass/variables/_mixins.scss";
 
 .voice-component {
   position: relative;
@@ -79,7 +88,7 @@ export default {
   }
 
   .voice-image {
-    background-color: $voice-bg;
+    background: $voice-bg;
     border-radius: 50%;
     height: 120px;
     justify-content: center;
@@ -87,11 +96,7 @@ export default {
     align-items: center;
 
     &.active {
-      background: linear-gradient(
-        219deg,
-        rgba(0, 227, 255, 1) 0%,
-        rgba(0, 187, 255, 1) 100%
-      );
+      @extend %background-gradient;
     }
   }
 

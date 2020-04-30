@@ -1,24 +1,23 @@
 <template>
   <div class="list-component">
-    <div class="fav-list-component" v-show="favVoices.length">
+    <div class="fav-list-component" v-show="favVoiceList.length">
       <vm-list-title title="Favourite voices" />
       <div class="fav-list">
         <vm-voice
-          v-for="voice in favVoices"
+          v-for="voice in favVoiceList"
           :key="voice.id"
           :voice="voice"
-          @toggle-fav="toggleFavVoice"
         />
       </div>
     </div>
     <div class="voice-list-component">
       <vm-list-title title="Pro voices" />
-      <div class="voice-list" v-if="voices">
+      <div class="voice-list" v-if="voiceList">
         <vm-voice
-          v-for="voice in voices"
+          v-for="voice in voiceList"
           :key="voice.id"
           :voice="voice"
-          @toggle-fav="toggleFavVoice"
+          @voice-scroll="scrollToVoice"
         />
       </div>
     </div>
@@ -28,38 +27,27 @@
 <script>
 import VmListTitle from "./VmListTitle";
 import VmVoice from "./VmVoice";
+import { mapState } from "vuex";
 
 export default {
   name: "VmList",
 
-  props: {
-    voices: Array,
-    randomVoice: Object
-  },
-
-  components: {
-    VmListTitle,
-    VmVoice
-  },
-
   methods: {
-    toggleFavVoice(voice, isFav) {
-      isFav
-        ? this.favVoices.push({ ...voice, fav: isFav })
-        : (this.favVoices = this.favVoices.filter(v => v.id !== voice.id));
+    scrollToVoice(position) {
+      window.scroll({
+        top: position,
+        left: 0,
+        behavior: "smooth"
+      });
     }
   },
 
   computed: {
-    voiceFavCheck(voice) {
-      return this.favVoices.filter(v => v.id === voice.id).length > 0;
-    }
+    ...mapState("voices", ["voiceList", "favVoiceList"])
   },
-
-  data() {
-    return {
-      favVoices: []
-    };
+  components: {
+    VmListTitle,
+    VmVoice
   }
 };
 </script>

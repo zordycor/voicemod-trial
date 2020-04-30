@@ -1,74 +1,59 @@
 <template>
   <div id="app">
     <div class="container">
-      <vm-nav
-        :options="voiceTags"
-        @input-change="searchFilter"
-        @filter-change="filterVoices"
-        @order-change="orderVoices"
-        @select-random="selectRandomVoice"
-      />
-      <vm-list :voices="voices" :randomVoice="randomVoice" />
+      <vm-nav />
+      <vm-list />
+      <div :class="['arrow', { active: isScrolled }]" @click="toTop">
+        <icon-arrow />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import VmNav from "@/components/VmNav.vue";
 import VmList from "@/components/VmList.vue";
-import VoicesApi from "@/api/VoicesApi.js";
+import IconArrow from "./components/Icon/IconArrow.vue";
 
 export default {
   name: "App",
 
-  components: {
-    VmNav,
-    VmList
-  },
-
   methods: {
-    getVoicesList(params) {
-      this.voices = VoicesApi.getVoices(params);
+    ...mapActions("voices", ["initStore"]),
+
+    toTop() {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: "smooth"
+      });
     },
 
-    searchFilter(searchText) {
-      this.getVoicesList({ ...this.params, name: searchText.toLowerCase() });
-    },
-
-    selectRandomVoice() {
-      this.randomVoice = this.voices[Math.random() * this.voices.length - 1];
-    },
-
-    filterVoices(category) {
-      this.getVoicesList({ ...this.params, tag: category });
-    },
-    orderVoices(order) {
-      this.getVoicesList({ ...this.params, order: order });
+    handleScroll(e) {
+      this.isScrolled = e.path[1].scrollY > 200;
     }
   },
 
   computed: {
-    ...mapState(["voices"]),
+    ...mapState("voices", ["voiceList"])
+  },
 
-    voiceTags() {
-      return [...new Set(this.voices.map(voice => voice.tags.toString()))];
-    }
+  components: {
+    VmNav,
+    VmList,
+    IconArrow
   },
 
   created() {
-    this.getVoicesList(this.params);
+    this.initStore();
+    window.addEventListener("scroll", this.handleScroll);
   },
 
   data() {
     return {
-      allVoices: [],
-      randomVoice: null,
-      params: {
-        name: "",
-        tag: "",
-        order: "asc"
-      }
+      showArrowToTop: false,
+      isScrolled: false
     };
   }
 };
@@ -76,15 +61,42 @@ export default {
 
 <style lang="scss">
 @import "@/assets/sass/variables/_colors.scss";
+@import "@/assets/sass/variables/_mixins.scss";
 
 #app {
   font-family: "Barlow", sans-serif;
   background-color: $dark-bg;
   font-size: 15px;
+  min-height: 100vh;
 
   .container {
     padding: 13px 25px;
     max-width: 1100px;
+
+    .arrow {
+      position: fixed;
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+      @extend %background-gradient;
+      width: 50px;
+      height: 50px;
+      bottom: 25px;
+      border-radius: 50%;
+      right: 25px;
+
+      &.active {
+        opacity: 1;
+        transition: opacity 0.15s ease-in;
+      }
+
+      svg {
+        transform: rotate(180deg);
+        padding: 15px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+    }
   }
 }
 </style>

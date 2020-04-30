@@ -1,20 +1,18 @@
 <template>
   <div class="nav-component">
-    <vm-search-input icon="search" @input-change="emitSearch" />
+    <vm-search-input icon="search" @input-change="textFilter" />
     <div class="filters">
       <vm-select
-        :options="options"
-        placeholder="All"
+        :options="voiceCategories"
         icon="filter"
-        @select-change="filterChange"
+        @select-change="selectFilter"
       />
       <vm-select
         :options="orderOptions"
-        placeholder="Order"
         icon="order"
-        @select-change="orderChange"
+        @select-change="selectOrder"
       />
-      <div class="icon-random" @click="randomVoice">
+      <div class="icon-random" @click="selectRandom">
         <icon-random />
       </div>
     </div>
@@ -25,30 +23,29 @@
 import IconRandom from "./Icon/IconRandom.vue";
 import VmSearchInput from "./VmSearchInput.vue";
 import VmSelect from "./VmSelect.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "VmNav",
 
-  props: {
-    options: { type: [Array, Object], required: true }
+  methods: {
+    ...mapActions("voices", ["updateFilters", "selectRandom"]),
+
+    textFilter(text) {
+      this.updateFilters({ ...this.filters, name: text });
+    },
+
+    selectFilter(option) {
+      this.updateFilters({ ...this.filters, tag: option });
+    },
+
+    selectOrder(option) {
+      this.updateFilters({ ...this.filters, order: option });
+    }
   },
 
-  methods: {
-    emitSearch(searchText) {
-      this.$emit("input-change", searchText);
-    },
-
-    randomVoice() {
-      this.$emit("select-random");
-    },
-
-    filterChange(option) {
-      this.$emit("filter-change", option);
-    },
-
-    orderChange(option) {
-      this.$emit("order-change", option);
-    }
+  computed: {
+    ...mapState("voices", ["filters", "voiceCategories"])
   },
 
   components: {
@@ -74,6 +71,7 @@ export default {
 .nav-component {
   display: flex;
   flex-direction: column;
+  user-select: none;
 
   .filters {
     display: flex;
