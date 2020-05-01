@@ -3,7 +3,10 @@
     <div class="container">
       <vm-nav />
       <vm-list />
-      <div :class="['arrow', { active: isScrolled }]" @click="toTop">
+      <div
+        :class="['arrow', { active: isScrolled, bounce: addedFavVoice }]"
+        @click="toTop"
+      >
         <icon-arrow />
       </div>
     </div>
@@ -36,7 +39,15 @@ export default {
   },
 
   computed: {
-    ...mapState("voices", ["voiceList"])
+    ...mapState("voices", ["voiceList", "favVoiceList"])
+  },
+
+  watch: {
+    favVoiceList() {
+      this.favVoiceList.length
+        ? (this.addedFavVoice = true)
+        : (this.addedFavVoice = false);
+    }
   },
 
   components: {
@@ -53,7 +64,8 @@ export default {
   data() {
     return {
       showArrowToTop: false,
-      isScrolled: false
+      isScrolled: false,
+      addedFavVoice: false
     };
   }
 };
@@ -84,6 +96,11 @@ export default {
       &.active {
         opacity: 1;
         transition: opacity 0.15s ease-in;
+      }
+
+      &.bounce {
+        animation-name: bounce;
+        animation-duration: 1.5s;
       }
 
       svg {

@@ -90,6 +90,11 @@ export default {
 
     .fav-icon {
       height: 14px;
+
+      &.active {
+        animation-name: select;
+        animation-duration: 0.5s;
+      }
     }
   }
 

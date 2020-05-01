@@ -1,5 +1,5 @@
 <template>
-  <div class="fav-icon">
+  <div class="fav-icon active">
     <svg width="14px" height="14px" viewBox="0 0 14 14">
       <defs>
         <linearGradient
