@@ -70,9 +70,6 @@ export default {
   min-height: 100vh;
 
   .container {
-    padding: 13px 25px;
-    max-width: 1100px;
-
     .arrow {
       position: fixed;
       opacity: 0;

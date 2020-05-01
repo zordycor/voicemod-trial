@@ -13,12 +13,7 @@
     <div class="voice-list-component">
       <vm-list-title title="Pro voices" />
       <div class="voice-list" v-if="voiceList">
-        <vm-voice
-          v-for="voice in voiceList"
-          :key="voice.id"
-          :voice="voice"
-          @voice-scroll="scrollToVoice"
-        />
+        <vm-voice v-for="voice in voiceList" :key="voice.id" :voice="voice" />
       </div>
     </div>
   </div>
@@ -31,16 +26,6 @@ import { mapState } from "vuex";
 
 export default {
   name: "VmList",
-
-  methods: {
-    scrollToVoice(position) {
-      window.scroll({
-        top: position,
-        left: 0,
-        behavior: "smooth"
-      });
-    }
-  },
 
   computed: {
     ...mapState("voices", ["voiceList", "favVoiceList"])
@@ -56,8 +41,14 @@ export default {
 @import "@/assets/sass/variables/_colors.scss";
 
 .list-component {
-  margin: 0 50px;
   color: $title;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .fav-list-component,
+  .voice-list-component {
+    margin: 0 50px;
+  }
 
   .fav-list,
   .voice-list {
