@@ -1,7 +1,10 @@
 <template>
   <div class="search-component">
     <icon-search class="icon icon-search" />
-    <input v-model="searchText" class="form-item search" />
+    <input
+      v-on:input="searchText = $event.target.value"
+      class="form-item search"
+    />
     <div class="icon icon-close" @click="emptyInput">
       <icon-close :color="searchText ? '#FFF' : '#000'" />
     </div>
@@ -21,7 +24,7 @@ export default {
 
   watch: {
     searchText(text) {
-      this.$emit("input-change", text);
+      this.$emit("input-change", text.toLowerCase());
     }
   },
 
@@ -65,8 +68,8 @@ export default {
   .icon-close {
     border-bottom-right-radius: 18px;
     border-top-right-radius: 18px;
-    height: 20px;
-    padding: 6px 12px;
+    height: 18px;
+    padding: 7px 12px;
   }
 
   .search {
