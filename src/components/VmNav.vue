@@ -33,9 +33,10 @@ export default {
 
     selectRandomVoice() {
       this.selectRandom();
-      const position =
-        document.getElementById(this.voiceSelected.id).offsetTop -
-        document.getElementById(this.voiceSelected.id).clientHeight * 2;
+      const position = this.voiceSelected
+        ? document.getElementById(this.voiceSelected.id).offsetTop -
+          document.getElementById(this.voiceSelected.id).clientHeight * 2
+        : window.offsetTop;
 
       window.scroll({
         top: position,
