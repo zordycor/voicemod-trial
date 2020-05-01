@@ -1,12 +1,15 @@
 <template>
-  <div class="voice-component" :ref="voice.id" :id="voice.id">
-    <div class="voice-fav" @click="toggleFav">
+  <div
+    :class="['voice-component', { 'voice-nav-list': isNavList }]"
+    :id="voice.id"
+  >
+    <div v-if="!isNavList" class="voice-fav" @click="toggleFav">
       <component :is="voiceFavHeart" />
     </div>
     <div :class="['voice-image', { active: isSelected }]" @click="voiceClick">
       <img :src="voiceImageUrl" :alt="voice.name" />
     </div>
-    <div :class="['voice-name', { active: isSelected }]">
+    <div v-if="!isNavList" :class="['voice-name', { active: isSelected }]">
       {{ voice.name }}
     </div>
   </div>
@@ -21,7 +24,8 @@ export default {
   name: "VmVoice",
 
   props: {
-    voice: Object
+    voice: Object,
+    isNavList: { type: Boolean, default: false }
   },
 
   methods: {
@@ -34,8 +38,8 @@ export default {
     voiceClick() {
       this.selectVoice(this.voice);
       const position = this.isSelected
-        ? this.$refs[this.voiceSelected.id].offsetTop -
-          this.$refs[this.voiceSelected.id].clientHeight * 2
+        ? document.getElementById(this.voiceSelected.id).offsetTop -
+          document.getElementById(this.voiceSelected.id).clientHeight * 2
         : window.offsetTop;
       window.scroll({
         top: position,
@@ -87,7 +91,6 @@ export default {
     padding: 8px;
     background-color: $voice-bg;
     border-radius: 50%;
-    transition: background-color 0.1s ease-out;
 
     .fav-icon {
       height: 14px;
@@ -106,7 +109,6 @@ export default {
     justify-content: center;
     display: flex;
     align-items: center;
-    transition: background-color 0.1s ease-out;
 
     &.active {
       @extend %background-gradient;
@@ -139,6 +141,19 @@ export default {
 
     .voice-name:not(.active) {
       color: $white;
+    }
+  }
+
+  &.voice-nav-list {
+    padding: 10px 5px;
+
+    .voice-image {
+      height: 30px;
+      width: 30px;
+
+      img {
+        height: 30px;
+      }
     }
   }
 }

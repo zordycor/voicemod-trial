@@ -79,12 +79,9 @@ export default {
     padding: 6px 0;
     margin-bottom: 15px;
 
-    @media ($mini-device) {
-      margin-bottom: 35px;
-    }
-
     @media ($medium-device) {
       flex: auto;
+      margin-bottom: 0;
     }
   }
 }
