@@ -85,14 +85,15 @@ export default {
     position: absolute;
     right: 0;
     padding: 8px;
-    background-color: $white;
+    background-color: $voice-bg;
     border-radius: 50%;
+    transition: background-color 0.1s ease-in;
 
     .fav-icon {
       height: 14px;
 
       &.active {
-        animation-name: select;
+        animation-name: add-fav;
         animation-duration: 0.5s;
       }
     }
@@ -105,6 +106,7 @@ export default {
     justify-content: center;
     display: flex;
     align-items: center;
+    transition: background-color 0.1s ease-out;
 
     &.active {
       @extend %background-gradient;
@@ -126,10 +128,13 @@ export default {
   &:hover {
     .voice-fav {
       visibility: visible;
+      background-color: $white;
+      transition: background-color 0.1s ease-in;
     }
 
     .voice-image {
       background-color: $white;
+      transition: background-color 0.1s ease-in;
     }
 
     .voice-name:not(.active) {
