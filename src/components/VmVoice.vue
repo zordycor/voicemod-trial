@@ -1,10 +1,10 @@
 <template>
-  <div class="voice-component" :ref="voice.id">
+  <div class="voice-component" :ref="voice.id" :id="voice.id">
     <div class="voice-fav" @click="toggleFav">
       <component :is="voiceFavHeart" />
     </div>
     <div :class="['voice-image', { active: isSelected }]" @click="voiceClick">
-      <img :src="voiceUrl" :alt="voice.name" />
+      <img :src="voiceImageUrl" :alt="voice.name" />
     </div>
     <div :class="['voice-name', { active: isSelected }]">
       {{ voice.name }}
@@ -33,13 +33,15 @@ export default {
 
     voiceClick() {
       this.selectVoice(this.voice);
-      this.$emit(
-        "voice-scroll",
-        this.isSelected
-          ? this.$refs[this.voiceSelected.id].offsetTop -
-              this.$refs[this.voiceSelected.id].clientHeight * 2
-          : window.offsetTop
-      );
+      const position = this.isSelected
+        ? this.$refs[this.voiceSelected.id].offsetTop -
+          this.$refs[this.voiceSelected.id].clientHeight * 2
+        : window.offsetTop;
+      window.scroll({
+        top: position,
+        left: 0,
+        behavior: "smooth"
+      });
     }
   },
 
@@ -50,7 +52,7 @@ export default {
       return this.voiceSelected && this.voiceSelected.id === this.voice.id;
     },
 
-    voiceUrl() {
+    voiceImageUrl() {
       return require("../assets/" + this.voice.icon);
     },
 
@@ -85,6 +87,10 @@ export default {
     padding: 8px;
     background-color: $white;
     border-radius: 50%;
+
+    .fav-icon {
+      height: 14px;
+    }
   }
 
   .voice-image {

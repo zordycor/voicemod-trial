@@ -54,29 +54,33 @@ const store = {
       if (state.voiceList === null) dispatch("updateVoices");
       commit("SET_CATEGORIES");
     },
+
     updateFilters({ dispatch, commit }, newFilters) {
       commit("SET_FILTERS", newFilters);
       dispatch("updateVoices");
     },
+
     selectVoice({ state, commit }, voice) {
       commit(
         "SET_VOICE_SELECTED",
         state.voiceSelected?.id === voice.id ? null : voice
       );
     },
+
     selectRandom({ state, commit }) {
+      const rand = Math.floor(Math.random() * state.voiceList.length - 1);
       commit(
         "SET_VOICE_SELECTED",
-        state.voiceList[Math.floor(Math.random() * state.voiceList.length - 1)]
+        state.voiceList[rand === -1 ? state.voiceList.length - 1 : rand]
       );
     },
+
     updateFavVoices({ commit }, voice) {
       commit("SET_FAV_VOICE", voice);
     },
 
     updateVoices({ commit, state }) {
       let voices = VoicesApi.getVoices(state.filters);
-
       commit("SET_VOICES", voices);
     }
   }
