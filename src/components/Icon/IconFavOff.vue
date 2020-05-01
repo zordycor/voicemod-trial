@@ -17,3 +17,9 @@
     </svg>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.fav-icon {
+  height: 14px;
+}
+</style>

@@ -1,14 +1,14 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import VmList from "@/components/VmList.vue";
+import { shallowMount, createLocalVue } from '@vue/test-utils'
+import Vuex from 'vuex'
+import VmList from '@/components/VmList.vue'
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
+const localVue = createLocalVue()
+localVue.use(Vuex)
 
 const state = {
   voiceList: null,
   favVoiceList: []
-};
+}
 
 const store = new Vuex.Store({
   modules: {
@@ -17,23 +17,23 @@ const store = new Vuex.Store({
       state
     }
   }
-});
+})
 
-describe("VmList", () => {
-  let wrapper;
-  let componentData;
-  window.scroll = jest.fn();
+describe('VmList', () => {
+  let wrapper
+  let componentData
+  window.scroll = jest.fn()
 
   beforeEach(() => {
     componentData = {
       localVue,
       store
-    };
-  });
+    }
+  })
 
-  it("should render correctly", () => {
-    wrapper = shallowMount(VmList, componentData);
+  it('should render correctly', () => {
+    wrapper = shallowMount(VmList, componentData)
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-});
+    expect(wrapper.isVueInstance()).toBeTruthy()
+  })
+})

@@ -1,5 +1,5 @@
-import voices from "./backend/voicesData.js";
-import VoiceFactory from "../domain/factory/VoiceFactory.js";
+import voices from './backend/voicesData.js'
+import VoiceFactory from '../domain/factory/VoiceFactory.js'
 
 class VoicesApi {
   getVoices(params) {
@@ -11,8 +11,8 @@ class VoicesApi {
             (params.name && !voice.name.toLowerCase().includes(params.name)) ||
             (params.tag && !voice.tags.includes(params.tag))
           )
-      );
-    return params.order == "asc" ? response.sort() : response.sort().reverse();
+      )
+    return params.order == 'asc' ? response.sort() : response.sort().reverse()
   }
 }
-export default new VoicesApi();
+export default new VoicesApi()

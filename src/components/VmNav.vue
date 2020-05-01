@@ -2,7 +2,7 @@
   <div :class="['nav-component', { scrolled: isScrolled }]">
     <div class="filters-container">
       <vm-search-input icon="search" @input-change="textFilter" />
-      <div class="filters">
+      <div class="nav-filters">
         <vm-select
           :options="voiceCategories"
           icon="filter"
@@ -30,54 +30,54 @@
 </template>
 
 <script>
-import IconRandom from "./Icon/IconRandom.vue";
-import VmSearchInput from "./VmSearchInput.vue";
-import VmSelect from "./VmSelect.vue";
-import VmVoice from "./VmVoice.vue";
-import { mapActions, mapState } from "vuex";
+import IconRandom from './Icon/IconRandom.vue'
+import VmSearchInput from './VmSearchInput.vue'
+import VmSelect from './VmSelect.vue'
+import VmVoice from './VmVoice.vue'
+import { mapActions, mapState } from 'vuex'
 
 export default {
-  name: "VmNav",
+  name: 'VmNav',
 
   methods: {
-    ...mapActions("voices", ["updateFilters", "selectRandom"]),
+    ...mapActions('voices', ['updateFilters', 'selectRandom']),
 
     selectRandomVoice() {
-      this.selectRandom();
+      this.selectRandom()
       const position = this.voiceSelected
         ? document.getElementById(this.voiceSelected.id).offsetTop -
           document.getElementById(this.voiceSelected.id).clientHeight * 2
-        : window.offsetTop;
+        : window.offsetTop
 
       window.scroll({
         top: position,
         left: 0,
-        behavior: "smooth"
-      });
+        behavior: 'smooth'
+      })
     },
     textFilter(text) {
-      this.updateFilters({ ...this.filters, name: text });
+      this.updateFilters({ ...this.filters, name: text })
     },
 
     selectFilter(option) {
-      this.updateFilters({ ...this.filters, tag: option });
+      this.updateFilters({ ...this.filters, tag: option })
     },
 
     selectOrder(option) {
-      this.updateFilters({ ...this.filters, order: option });
+      this.updateFilters({ ...this.filters, order: option })
     },
 
     handleScroll(e) {
-      this.isScrolled = e.path[1].scrollY;
+      this.isScrolled = e.path[1].scrollY
     }
   },
 
   computed: {
-    ...mapState("voices", [
-      "filters",
-      "voiceCategories",
-      "voiceSelected",
-      "favVoiceList"
+    ...mapState('voices', [
+      'filters',
+      'voiceCategories',
+      'voiceSelected',
+      'favVoiceList'
     ])
   },
 
@@ -89,24 +89,24 @@ export default {
   },
 
   created() {
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll)
   },
 
   data() {
     return {
       orderOptions: [
-        { label: "Ascending", value: "asc" },
-        { label: "Descending", value: "desc" }
+        { label: 'Ascending', value: 'asc' },
+        { label: 'Descending', value: 'desc' }
       ],
       isScrolled: false
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/variables/_breakpoints.scss";
-@import "@/assets/sass/variables/_colors.scss";
+@import '@/assets/sass/variables/_breakpoints.scss';
+@import '@/assets/sass/variables/_colors.scss';
 
 .nav-component {
   display: flex;
@@ -128,7 +128,7 @@ export default {
     flex-direction: column;
     justify-content: space-evenly;
 
-    .filters {
+    .nav-filters {
       display: flex;
       justify-content: space-evenly;
 

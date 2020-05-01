@@ -44,7 +44,7 @@ export default {
   props: {
     color: String
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

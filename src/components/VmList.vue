@@ -1,8 +1,8 @@
 <template>
   <div class="list-component">
-    <div v-show="favVoiceList.length" class="fav-list-component">
-      <vm-list-title title="Favourite voices" />
-      <div class="fav-list">
+    <div v-show="favVoiceList.length" class="list-container">
+      <vm-list-title title="Favorite voices" />
+      <div class="list-voices">
         <vm-voice
           v-for="voice in favVoiceList"
           :key="voice.id"
@@ -10,48 +10,51 @@
         />
       </div>
     </div>
-    <div class="voice-list-component">
+    <div class="list-container">
       <vm-list-title title="Pro voices" />
-      <div class="voice-list" v-if="voiceList">
-        <vm-voice v-for="voice in voiceList" :key="voice.id" :voice="voice" />
+      <div class="list-voices" v-if="voiceList">
+        <vm-voice
+          v-for="voice in voiceList"
+          :key="voice.id"
+          :voice="voice"
+          :isProList="true"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import VmListTitle from "./VmListTitle";
-import VmVoice from "./VmVoice";
-import { mapState } from "vuex";
+import VmListTitle from './VmListTitle'
+import VmVoice from './VmVoice'
+import { mapState } from 'vuex'
 
 export default {
-  name: "VmList",
+  name: 'VmList',
 
   computed: {
-    ...mapState("voices", ["voiceList", "favVoiceList"])
+    ...mapState('voices', ['voiceList', 'favVoiceList'])
   },
   components: {
     VmListTitle,
     VmVoice
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/variables/_colors.scss";
+@import '@/assets/sass/variables/_colors.scss';
 
 .list-component {
   color: $title;
   max-width: 1200px;
   margin: 0 auto;
 
-  .fav-list-component,
-  .voice-list-component {
+  .list-container {
     margin: 0 50px;
   }
 
-  .fav-list,
-  .voice-list {
+  .list-voices {
     display: grid;
     grid-template-columns: repeat(auto-fill, 120px);
     grid-column-gap: 50px;

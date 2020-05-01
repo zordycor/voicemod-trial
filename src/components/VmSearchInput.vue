@@ -3,7 +3,7 @@
     <icon-search class="icon icon-search" />
     <input
       v-on:input="searchText = $event.target.value"
-      class="form-item search"
+      class="form-item search-input"
     />
     <div class="icon icon-close" @click="emptyInput">
       <icon-close :color="searchText ? '#FFF' : '#000'" />
@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import IconSearch from "./Icon/IconSearch.vue";
-import IconClose from "./Icon/IconClose.vue";
+import IconSearch from './Icon/IconSearch.vue'
+import IconClose from './Icon/IconClose.vue'
 
 export default {
-  name: "VmSearchInput",
+  name: 'VmSearchInput',
 
   props: {
     icon: String
@@ -24,13 +24,13 @@ export default {
 
   watch: {
     searchText(text) {
-      this.$emit("input-change", text.toLowerCase());
+      this.$emit('input-change', text.toLowerCase())
     }
   },
 
   methods: {
     emptyInput() {
-      this.searchText = "";
+      this.searchText = ''
     }
   },
 
@@ -41,15 +41,15 @@ export default {
 
   data() {
     return {
-      searchText: ""
-    };
+      searchText: ''
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/variables/_colors.scss";
-@import "@/assets/sass/variables/_breakpoints.scss";
+@import '@/assets/sass/variables/_colors.scss';
+@import '@/assets/sass/variables/_breakpoints.scss';
 
 .search-component {
   display: flex;
@@ -72,7 +72,7 @@ export default {
     padding: 7px 12px;
   }
 
-  .search {
+  .search-input {
     flex: 1;
     color: $white;
     font-size: 16px;

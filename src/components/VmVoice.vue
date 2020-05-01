@@ -1,69 +1,83 @@
 <template>
   <div
-    :class="['voice-component', { 'voice-nav-list': isNavList }]"
+    :class="['voice-component', { 'voice-on-nav': isNavList }]"
     :id="voice.id"
+    :ref="voice.id"
   >
-    <div v-if="!isNavList" class="voice-fav" @click="toggleFav">
+    <div
+      v-if="!isNavList"
+      :class="['voice-heart-container', { 'is-fav': isProList && isVoiceFav }]"
+      @click="toggleFav"
+    >
       <component :is="voiceFavHeart" />
     </div>
-    <div :class="['voice-image', { active: isSelected }]" @click="voiceClick">
+    <div
+      :class="['voice-image', { 'is-selected': isSelected }]"
+      @click="voiceClick"
+    >
       <img :src="voiceImageUrl" :alt="voice.name" />
     </div>
-    <div v-if="!isNavList" :class="['voice-name', { active: isSelected }]">
+    <div
+      v-if="!isNavList"
+      :class="['voice-name', { 'is-selected': isSelected }]"
+    >
       {{ voice.name }}
     </div>
   </div>
 </template>
 
 <script>
-import IconFavOn from "./Icon/IconFavOn.vue";
-import IconFavOff from "./Icon/IconFavOff.vue";
-import { mapActions, mapState } from "vuex";
+import IconFavOn from './Icon/IconFavOn.vue'
+import IconFavOff from './Icon/IconFavOff.vue'
+import { mapActions, mapState } from 'vuex'
 
 export default {
-  name: "VmVoice",
+  name: 'VmVoice',
 
   props: {
     voice: Object,
-    isNavList: { type: Boolean, default: false }
+    isNavList: { type: Boolean, default: false },
+    isProList: { type: Boolean, default: false }
   },
 
   methods: {
-    ...mapActions("voices", ["selectVoice", "updateFavVoices"]),
+    ...mapActions('voices', ['selectVoice', 'updateFavVoices']),
 
     toggleFav() {
-      this.updateFavVoices(this.voice);
+      this.updateFavVoices(this.voice)
     },
 
     voiceClick() {
-      this.selectVoice(this.voice);
+      this.selectVoice(this.voice)
       const position = this.isSelected
-        ? document.getElementById(this.voiceSelected.id).offsetTop -
-          document.getElementById(this.voiceSelected.id).clientHeight * 2
-        : window.offsetTop;
+        ? this.$refs[this.voiceSelected.id].offsetTop -
+          this.$refs[this.voiceSelected.id].clientHeight * 2
+        : window.offsetTop
       window.scroll({
         top: position,
         left: 0,
-        behavior: "smooth"
-      });
+        behavior: 'smooth'
+      })
     }
   },
 
   computed: {
-    ...mapState("voices", ["favVoiceList", "voiceSelected"]),
+    ...mapState('voices', ['favVoiceList', 'voiceSelected']),
 
     isSelected() {
-      return this.voiceSelected && this.voiceSelected.id === this.voice.id;
+      return this.voiceSelected && this.voiceSelected.id === this.voice.id
     },
 
     voiceImageUrl() {
-      return require("../assets/" + this.voice.icon);
+      return require('../assets/' + this.voice.icon)
+    },
+
+    isVoiceFav() {
+      return this.favVoiceList.includes(this.voice)
     },
 
     voiceFavHeart() {
-      return `icon-fav-${
-        this.favVoiceList.includes(this.voice) ? "on" : "off"
-      }`;
+      return `icon-fav-${this.isVoiceFav ? 'on' : 'off'}`
     }
   },
 
@@ -71,12 +85,12 @@ export default {
     IconFavOn,
     IconFavOff
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/variables/_colors.scss";
-@import "@/assets/sass/variables/_mixins.scss";
+@import '@/assets/sass/variables/_colors.scss';
+@import '@/assets/sass/variables/_mixins.scss';
 
 .voice-component {
   position: relative;
@@ -84,7 +98,7 @@ export default {
   cursor: pointer;
   user-select: none;
 
-  .voice-fav {
+  .voice-heart-container {
     visibility: hidden;
     position: absolute;
     right: 0;
@@ -92,13 +106,8 @@ export default {
     background-color: $voice-bg;
     border-radius: 50%;
 
-    .fav-icon {
-      height: 14px;
-
-      &.active {
-        animation-name: add-fav;
-        animation-duration: 0.5s;
-      }
+    &.is-fav {
+      visibility: visible;
     }
   }
 
@@ -110,7 +119,7 @@ export default {
     display: flex;
     align-items: center;
 
-    &.active {
+    &.is-selected {
       @extend %background-gradient;
     }
   }
@@ -122,13 +131,13 @@ export default {
     font-size: 14px;
     color: $light-text;
 
-    &.active {
+    &.is-selected {
       color: $blue-text;
     }
   }
 
   &:hover {
-    .voice-fav {
+    .voice-heart-container {
       visibility: visible;
       background-color: $white;
       transition: background-color 0.1s ease-in;
@@ -139,12 +148,12 @@ export default {
       transition: background-color 0.1s ease-in;
     }
 
-    .voice-name:not(.active) {
+    .voice-name:not(.is-selected) {
       color: $white;
     }
   }
 
-  &.voice-nav-list {
+  &.voice-on-nav {
     padding: 10px 5px;
 
     .voice-image {

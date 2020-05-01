@@ -1,5 +1,5 @@
-import capitalizeText from "./capitalizeText.js";
+import capitalizeText from './capitalizeText.js'
 
 export default {
   capitalizeText
-};
+}

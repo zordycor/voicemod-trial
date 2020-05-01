@@ -1,5 +1,5 @@
 <template>
-  <div class="fav-icon active">
+  <div class="fav-icon is-active">
     <svg width="14px" height="14px" viewBox="0 0 14 14">
       <defs>
         <linearGradient
@@ -38,3 +38,14 @@
     </svg>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.fav-icon {
+  height: 14px;
+
+  &.is-active {
+    animation-name: add-fav;
+    animation-duration: 0.5s;
+  }
+}
+</style>

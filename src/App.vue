@@ -4,7 +4,7 @@
       <vm-nav />
       <vm-list />
       <div
-        :class="['arrow', { active: isScrolled, bounce: addedFavVoice }]"
+        :class="['arrow', { 'is-visible': isScrolled, bounce: addedFavVoice }]"
         @click="toTop"
       >
         <icon-arrow />
@@ -14,39 +14,39 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import VmNav from "@/components/VmNav.vue";
-import VmList from "@/components/VmList.vue";
-import IconArrow from "./components/Icon/IconArrow.vue";
+import { mapState, mapActions } from 'vuex'
+import VmNav from '@/components/VmNav.vue'
+import VmList from '@/components/VmList.vue'
+import IconArrow from './components/Icon/IconArrow.vue'
 
 export default {
-  name: "App",
+  name: 'App',
 
   methods: {
-    ...mapActions("voices", ["initStore"]),
+    ...mapActions('voices', ['initStore']),
 
     toTop() {
       window.scroll({
         top: 0,
         left: 0,
-        behavior: "smooth"
-      });
+        behavior: 'smooth'
+      })
     },
 
     handleScroll(e) {
-      this.isScrolled = e.path[1].scrollY > 200;
+      this.isScrolled = e.path[1].scrollY > 200
     }
   },
 
   computed: {
-    ...mapState("voices", ["voiceList", "favVoiceList"])
+    ...mapState('voices', ['voiceList', 'favVoiceList'])
   },
 
   watch: {
     favVoiceList() {
       this.favVoiceList.length
         ? (this.addedFavVoice = true)
-        : (this.addedFavVoice = false);
+        : (this.addedFavVoice = false)
     }
   },
 
@@ -57,8 +57,8 @@ export default {
   },
 
   created() {
-    this.initStore();
-    window.addEventListener("scroll", this.handleScroll);
+    this.initStore()
+    window.addEventListener('scroll', this.handleScroll)
   },
 
   data() {
@@ -66,17 +66,17 @@ export default {
       showArrowToTop: false,
       isScrolled: false,
       addedFavVoice: false
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="scss">
-@import "@/assets/sass/variables/_colors.scss";
-@import "@/assets/sass/variables/_mixins.scss";
+@import '@/assets/sass/variables/_colors.scss';
+@import '@/assets/sass/variables/_mixins.scss';
 
 #app {
-  font-family: "Barlow", sans-serif;
+  font-family: 'Barlow', sans-serif;
   background-color: $dark-bg;
   font-size: 15px;
   min-height: 100vh;
@@ -93,7 +93,7 @@ export default {
       border-radius: 50%;
       right: 25px;
 
-      &.active {
+      &.is-visible {
         opacity: 1;
         transition: opacity 0.15s ease-in;
       }

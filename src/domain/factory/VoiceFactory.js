@@ -1,4 +1,4 @@
-import Voice from "@/domain/models/Voice.js";
+import Voice from '@/domain/models/Voice.js'
 
 class VoiceFactory {
   getVoiceForList(voiceData) {
@@ -7,8 +7,8 @@ class VoiceFactory {
       name: voiceData.name,
       icon: voiceData.icon,
       tags: voiceData.tags
-    });
+    })
   }
 }
 
-export default new VoiceFactory();
+export default new VoiceFactory()

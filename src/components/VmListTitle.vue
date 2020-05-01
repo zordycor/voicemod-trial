@@ -1,13 +1,13 @@
 <template>
   <div class="list-title-component">
-    <div class="title">{{ titleUpperCase || "" }}</div>
-    <span class="line"></span>
+    <div class="list-title">{{ titleUpperCase || '' }}</div>
+    <span class="list-separator"></span>
   </div>
 </template>
 
 <script>
 export default {
-  name: "VmListTitle",
+  name: 'VmListTitle',
 
   props: {
     title: String
@@ -15,28 +15,28 @@ export default {
 
   computed: {
     titleUpperCase() {
-      return this.title.toUpperCase();
+      return this.title.toUpperCase()
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/variables/_colors.scss";
-@import "@/assets/sass/variables/_breakpoints.scss";
+@import '@/assets/sass/variables/_colors.scss';
+@import '@/assets/sass/variables/_breakpoints.scss';
 
 .list-title-component {
   display: flex;
   margin: 25px 0;
 
-  .title {
+  .list-title {
     font-size: 30px;
     text-align: center;
     margin-right: 0;
     flex: 1;
   }
 
-  .line {
+  .list-separator {
     display: none;
     height: 1px;
     background: $separator;
@@ -45,14 +45,14 @@ export default {
   }
 
   @media ($small-device) {
-    .title {
+    .list-title {
       font-size: 18px;
       text-align: initial;
       margin-right: 15px;
       flex: initial;
     }
 
-    .line {
+    .list-separator {
       display: inline-block;
     }
   }
