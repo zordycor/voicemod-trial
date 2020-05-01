@@ -1,4 +1,4 @@
-import voices from "./backend/voices.js";
+import voices from "./backend/voicesData.js";
 import VoiceFactory from "../domain/factory/VoiceFactory.js";
 
 class VoicesApi {

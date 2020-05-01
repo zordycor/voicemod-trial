@@ -1,6 +1,6 @@
 <template>
   <div class="list-component">
-    <div class="fav-list-component" v-show="favVoiceList.length">
+    <div v-show="favVoiceList.length" class="fav-list-component">
       <vm-list-title title="Favourite voices" />
       <div class="fav-list">
         <vm-voice

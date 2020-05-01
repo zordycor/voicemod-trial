@@ -87,7 +87,7 @@ export default {
     padding: 8px;
     background-color: $voice-bg;
     border-radius: 50%;
-    transition: background-color 0.1s ease-in;
+    transition: background-color 0.1s ease-out;
 
     .fav-icon {
       height: 14px;
