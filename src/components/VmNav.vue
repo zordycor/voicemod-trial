@@ -97,7 +97,7 @@ export default {
   user-select: none;
   position: sticky;
   background: $dark-bg;
-  top: 0px;
+  top: -1px;
   padding: 20px 50px 0;
   z-index: 2;
 
