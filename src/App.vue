@@ -9,6 +9,9 @@
       >
         <icon-arrow />
       </div>
+      <div :class="['snackbar', { 'is-visible': isAddedToFavs }]">
+        <pre>Added <b>{{ lastFavVoiceAdded ? lastFavVoiceAdded.name : '' }}</b> voice to favorites!</pre>
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +42,7 @@ export default {
   },
 
   computed: {
-    ...mapState('voices', ['voiceList', 'favVoiceList'])
+    ...mapState('voices', ['voiceList', 'favVoiceList', 'lastFavVoiceAdded'])
   },
 
   watch: {
@@ -47,6 +50,13 @@ export default {
       this.favVoiceList.length
         ? (this.addedFavVoice = true)
         : (this.addedFavVoice = false)
+    },
+
+    lastFavVoiceAdded() {
+      if (this.lastFavVoiceAdded !== null) {
+        this.isAddedToFavs = true
+        setTimeout(() => (this.isAddedToFavs = false), 2000)
+      }
     }
   },
 
@@ -65,7 +75,8 @@ export default {
     return {
       showArrowToTop: false,
       isScrolled: false,
-      addedFavVoice: false
+      addedFavVoice: false,
+      isAddedToFavs: false
     }
   }
 }
@@ -74,6 +85,7 @@ export default {
 <style lang="scss">
 @import '@/assets/sass/variables/_colors.scss';
 @import '@/assets/sass/variables/_mixins.scss';
+@import '@/assets/sass/variables/_breakpoints.scss';
 
 #app {
   font-family: 'Barlow', sans-serif;
@@ -109,6 +121,30 @@ export default {
         width: 20px;
         height: 20px;
         cursor: pointer;
+      }
+    }
+
+    .snackbar {
+      position: fixed;
+      opacity: 0;
+      display: flex;
+      width: auto;
+      align-items: center;
+      bottom: 25px;
+      right: 100px;
+      border-radius: 25px;
+      padding: 0 15px;
+      font-weight: 500;
+      transition: opacity 0.5s ease-out;
+      @extend %background-gradient;
+
+      &.is-visible {
+        opacity: 0;
+
+        @media ($small-device) {
+          opacity: 1;
+          transition: opacity 0.5s ease-in;
+        }
       }
     }
   }

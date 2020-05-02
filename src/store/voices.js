@@ -15,6 +15,7 @@ const store = {
     voiceList: null,
     voiceCategories: [],
     favVoiceList: [],
+    lastFavVoiceAdded: null,
     voiceSelected: null,
     filters: defaultFilters()
   },
@@ -31,11 +32,13 @@ const store = {
     },
     SET_FAV_VOICE: (state, voice) => {
       voice.fav = !voice.fav
-      state.favVoiceList.filter(v => v.id === voice.id).length
-        ? (state.favVoiceList = state.favVoiceList.filter(
-            v => v.id !== voice.id
-          ))
-        : state.favVoiceList.push(voice)
+      if (state.favVoiceList.filter(v => v.id === voice.id).length) {
+        state.favVoiceList = state.favVoiceList.filter(v => v.id !== voice.id)
+        state.lastFavVoiceAdded = null
+      } else {
+        state.favVoiceList.push(voice)
+        state.lastFavVoiceAdded = voice
+      }
     },
     SET_CATEGORIES: state => {
       state.voiceCategories = [{ label: 'All', value: '' }].concat(
