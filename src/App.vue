@@ -9,8 +9,11 @@
       >
         <icon-arrow />
       </div>
-      <div :class="['snackbar', { 'is-visible': isAddedToFavs }]">
-        <pre>Added <b>{{ lastFavVoiceAdded ? lastFavVoiceAdded.name : '' }}</b> voice to favorites!</pre>
+      <div
+        v-if="lastFavVoiceAdded"
+        :class="['snackbar', { 'is-visible': isAddedToFavs }]"
+      >
+        <pre>Added <b>{{ lastFavVoiceAdded.name }}</b> voice to favorites!</pre>
       </div>
     </div>
   </div>
