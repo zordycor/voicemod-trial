@@ -1,10 +1,7 @@
 <template>
   <div class="search-component">
     <icon-search class="icon icon-search" />
-    <input
-      v-on:input="searchText = $event.target.value"
-      class="form-item search-input"
-    />
+    <input v-model="searchText" class="form-item search-input" />
     <div class="icon icon-close" @click="emptyInput">
       <icon-close :color="searchText ? '#FFF' : '#000'" />
     </div>
